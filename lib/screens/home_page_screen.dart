@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    futureNews = NewsService().fetchNews('popular');
+    futureNews = NewsService().fetchNews('pakistan');
   }
 
   void updateNews(String topicName) {
@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
       length: tabsTitle.length,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor:const Color(0xffb20710),
           leadingWidth: 45,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,20 +76,24 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Latest News Section
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Latest News",
+                    Text(
+                      "Top Headlines",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                     ),
                     Text(
                       "See All",
                       style: TextStyle(
-                          color: AppColors.iconPrimaryColor, fontSize: 16),
+                          color: Color(0xffb20710),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Color(0xffb20710)),
                     )
                   ],
                 ),
@@ -127,8 +132,8 @@ class _HomePageState extends State<HomePage> {
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           colors: [
-                                            Colors.black.withOpacity(0.7),
-                                            Colors.transparent
+                                            Colors.black.withOpacity(0.9),
+                                            Colors.black54
                                           ],
                                           begin: Alignment.bottomCenter,
                                           end: Alignment.topCenter,
@@ -145,14 +150,14 @@ class _HomePageState extends State<HomePage> {
                                             Text(
                                               'by ${article.author}',
                                               style: const TextStyle(
-                                                  color: Colors.red,
+                                                  color: Color(0xffb20710),
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 12),
                                             ),
                                             const SizedBox(height: 5),
                                             Text(
                                               article.title!,
-                                              maxLines: 3,
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
                                                   color: Colors.white,
@@ -185,15 +190,19 @@ class _HomePageState extends State<HomePage> {
                       }
                     }),
               ),
-
+              const SizedBox(height: 15),
+             const Text(
+                "Latest News",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
               // Category Tabs (Scrollable)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 child: TabBar(
                   isScrollable: true,
-                  indicatorColor: AppColors.surfaceColor,
-                  labelColor: AppColors.textPrimaryColor,
-                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: const Color(0xffb20710),
+                  labelColor: const Color(0xffb20710),
+                  unselectedLabelColor: Colors.black,
                   labelPadding: const EdgeInsets.symmetric(horizontal: 12),
                   tabs:
                       tabsTitle.map((category) => Tab(text: category)).toList(),

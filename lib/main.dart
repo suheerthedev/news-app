@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'News App',
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+        primaryColor: Colors.white,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        
           brightness: Brightness.light,
           fontFamily: 'Montserrat',
           textTheme: const TextTheme(
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
               AppBarTheme(color: AppColors.primaryColor, centerTitle: true)),
       home: const SplashScreen(),
       routes: {
-        'homescreen' : (context) => const HomePage(),
+        '/homescreen' : (context) => const HomePage(),
         'splashscreen' : (context) => const SplashScreen()
       }, 
     );
