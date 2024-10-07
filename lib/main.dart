@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/screens/home_page_screen.dart';
+import 'package:news_app/screens/splash_screen.dart';
 import 'package:news_app/utils/app_colors.dart';
 
 void main() {
@@ -22,7 +23,11 @@ class MyApp extends StatelessWidget {
               titleSmall: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           appBarTheme:
               AppBarTheme(color: AppColors.primaryColor, centerTitle: true)),
-      home: const HomePage(title: 'News App'),
+      home: const SplashScreen(),
+      routes: {
+        'homescreen' : (context) => const HomePage(),
+        'splashscreen' : (context) => const SplashScreen()
+      }, 
     );
   }
 }

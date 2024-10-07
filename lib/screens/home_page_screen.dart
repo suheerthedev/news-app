@@ -5,8 +5,7 @@ import 'package:news_app/services/news_service.dart';
 import 'package:news_app/utils/app_colors.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-  final String title;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,31 +20,29 @@ class _HomePageState extends State<HomePage> {
     futureNews = NewsService().fetchNews('popular');
   }
 
-  void updateNews (String topicName){
+  void updateNews(String topicName) {
     setState(() {
       futureNews = NewsService().fetchNews(topicName);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     List<String> tabsTitle = [
-      'Popular',
-      'All',
-      'Politics',
-      'Tech',
-      'Health',
+      'Healthy',
+      'Technology',
+      'Finance',
+      'Arts',
+      'Sports',
       'Science',
       'Bitcoin',
       'Zardari'
     ];
+
     return DefaultTabController(
       length: tabsTitle.length,
       child: Scaffold(
-        drawer: Container(
-            margin: const EdgeInsets.only(left: 20),
-            child: const Icon(Iconsax.menu)),
         appBar: AppBar(
-          // automaticallyImplyLeading: false,
           leadingWidth: 45,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,75 +69,222 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              alignment: Alignment.centerLeft,
-              child: const Text("Recommendation", style:  TextStyle(fontWeight: FontWeight.bold, fontSize: 26),)),
-              
-            Container(
-              padding: EdgeInsets.zero,
-              margin: EdgeInsets.zero,
-              alignment: Alignment.centerLeft,
-              child: TabBar(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Latest News Section
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Latest News",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    ),
+                    Text(
+                      "See All",
+                      style: TextStyle(
+                          color: AppColors.iconPrimaryColor, fontSize: 16),
+                    )
+                  ],
+                ),
+              ),
+
+              // Featured Articles (Horizontal Scroll)
+              SizedBox(
+                height: 200,
+                child: FutureBuilder(
+                    future: futureNews,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (snapshot.hasData) {
+                        return Expanded(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data?.articles.length ?? 0,
+                            itemBuilder: (context, index) {
+                              var article = snapshot.data!.articles[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                    width: 300,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(article.imageUrl!),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.black.withOpacity(0.7),
+                                            Colors.transparent
+                                          ],
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'by ${article.author}',
+                                              style: const TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              article.title!,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              article.description!,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                          child: Text("No Data Available"),
+                        );
+                      }
+                    }),
+              ),
+
+              // Category Tabs (Scrollable)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: TabBar(
                   isScrollable: true,
                   indicatorColor: AppColors.surfaceColor,
                   labelColor: AppColors.textPrimaryColor,
-                  labelPadding: const EdgeInsets.only(right: 10),
-                  tabs: [
-                    Tab(
-                      text: tabsTitle[0],
-                    ),
-                    Tab(
-                      text: tabsTitle[1],
-                    ),
-                    Tab(
-                      text: tabsTitle[2],
-                    ),
-                    Tab(
-                      text: tabsTitle[3],
-                    ),
-                    Tab(
-                      text: tabsTitle[4],
-                    ),
-                    Tab(
-                      text: tabsTitle[5],
-                    ),
-                    Tab(
-                      text: tabsTitle[6],
-                    ),
-                    Tab(
-                      text: tabsTitle[7],
-                    ),
-                  ]),
-            ),
-            FutureBuilder(future: futureNews, builder:(context, snapshot){
-              if(snapshot.connectionState == ConnectionState.waiting){
-                return const Center(child: CircularProgressIndicator());
-              }else if(snapshot.hasError) {
-                return  Center(child: Text('Error: ${snapshot.error}'));
-              }else if (snapshot.hasData){
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: snapshot.data?.articles.length ?? 0,
-                    itemBuilder: (context, index){
-                      var article = snapshot.data!.articles[index];
-                      return Container(
-                        child: Column(
+                  unselectedLabelColor: Colors.grey,
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 12),
+                  tabs:
+                      tabsTitle.map((category) => Tab(text: category)).toList(),
+                ),
+              ),
 
-                        ),
-                      );
-                    },
-                  ),
-                );
-              }else{
-                return const Center(child: Text("No Data Available"),);
-              }
-              
-            })
-          ],
+              // News List Section
+              Expanded(
+                child: FutureBuilder(
+                    future: futureNews,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (snapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: snapshot.data?.articles.length ?? 0,
+                          itemBuilder: (context, index) {
+                            var article = snapshot.data!.articles[index];
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 10.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(
+                                      article.imageUrl!,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Container(
+                                          width: 100,
+                                          height: 100,
+                                          color: Colors
+                                              .grey, // Background color for the fallback
+                                          child: const Icon(
+                                            Icons.broken_image,
+                                            color: Colors.white,
+                                          ), // Placeholder icon or image
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          article.title!,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          article.description!,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 14),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          'by ${article.author}, ${article.publishedAt}',
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return const Center(
+                          child: Text("No Data Available"),
+                        );
+                      }
+                    }),
+              )
+            ],
+          ),
         ),
       ),
     );
