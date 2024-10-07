@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
           fontFamily: 'Montserrat',
           textTheme: const TextTheme(
-              titleSmall: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              titleSmall: TextStyle(color: Colors.black,fontSize: 18, fontWeight: FontWeight.bold)),
           appBarTheme:
               AppBarTheme(color: AppColors.primaryColor, centerTitle: true)),
       home: const SplashScreen(),
