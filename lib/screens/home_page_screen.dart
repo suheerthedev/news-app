@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:news_app/models/news_model.dart';
-import 'package:news_app/screens/article_details_screen.dart';
 import 'package:news_app/services/news_service.dart';
 import 'package:news_app/utils/app_colors.dart';
 

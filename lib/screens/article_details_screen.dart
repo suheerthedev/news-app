@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/models/news_model.dart';
 
 class ArticleDetailsScreen extends StatelessWidget {
 
