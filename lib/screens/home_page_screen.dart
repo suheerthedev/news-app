@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:news_app/models/news_model.dart';
+import 'package:news_app/screens/article_details_screen.dart';
 import 'package:news_app/services/news_service.dart';
 import 'package:news_app/utils/app_colors.dart';
 
@@ -14,31 +15,31 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future<NewsResponse> futureNews;
 
-     List<String> topics = [
-      'pakistan',
-      'popular',
-      'technology',
-      'sports',
-      'politics',
-      'crypto',
-    ];
+  List<String> topics = [
+    'pakistan',
+    'popular',
+    'technology',
+    'sports',
+    'politics',
+    'crypto',
+  ];
 
-     List<String> tabsTitle = [
-      'All',
-      'Popular',
-      'Technology',
-      'Sports',
-      'Politics',
-      'Crypto',
-    ];
+  List<String> tabsTitle = [
+    'All',
+    'Popular',
+    'Technology',
+    'Sports',
+    'Politics',
+    'Crypto',
+  ];
 
-       List<String> locations = const [
-      "Pakistan",
-      "United States",
-      "United Arab Emirates",
-      "United Kingdom",
-      "India",
-    ];
+  List<String> locations = const [
+    "Pakistan",
+    "United States",
+    "United Arab Emirates",
+    "United Kingdom",
+    "India",
+  ];
 
   @override
   void initState() {
@@ -51,8 +52,8 @@ class _HomePageState extends State<HomePage> {
       futureNews = NewsService().fetchNews(topicName);
     });
   }
-  
-     String _selectedLocation = "Pakistan";
+
+  String _selectedLocation = "Pakistan";
 
   @override
   Widget build(BuildContext context) {
@@ -76,21 +77,22 @@ class _HomePageState extends State<HomePage> {
                   DropdownButton(
                     iconEnabledColor: Colors.white,
                     dropdownColor: const Color(0xffb20710),
-                    
                     value: _selectedLocation,
-                    onChanged: (String? newValue){
+                    onChanged: (String? newValue) {
                       setState(() {
                         _selectedLocation = newValue!;
                       });
                     },
-                    items: locations.map((String location){
+                    items: locations.map((String location) {
                       return DropdownMenuItem<String>(
-                        
                         value: location,
-                        child: Text(location, style:const TextStyle(color: Colors.white),) ,
+                        child: Text(
+                          location,
+                          style: const TextStyle(color: Colors.white),
+                        ),
                       );
                     }).toList(),
-                    )
+                  )
                 ],
               ),
               Icon(
@@ -244,95 +246,100 @@ class _HomePageState extends State<HomePage> {
               ),
 
               Expanded(
-  child: TabBarView(
-    children: tabsTitle.asMap().entries.map((entry) {
-      int tabIndex = entry.key;
+                child: TabBarView(
+                  children: tabsTitle.asMap().entries.map((entry) {
+                    int tabIndex = entry.key;
 
-      // Update news when the tab changes
-    updateNews(tabsTitle[tabIndex]); // Pass the tab name as a String
+                    // Update news when the tab changes
+                    updateNews(
+                        tabsTitle[tabIndex]); // Pass the tab name as a String
 
-
-      // FutureBuilder to display news for the selected tab
-      return FutureBuilder(
-        future: futureNews,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data?.articles.length ?? 0,
-              itemBuilder: (context, index) {
-                var article = snapshot.data!.articles[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          article.imageUrl!,
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              width: 100,
-                              height: 100,
-                              color: Colors.grey,
-                              child: const Icon(
-                                Icons.broken_image,
-                                color: Colors.white,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              article.title!,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              article.description!,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          } else {
-            return const Center(
-              child: Text('No data available'),
-            );
-          }
-        },
-      );
-    }).toList(),
-  ),
-),
+                    // FutureBuilder to display news for the selected tab
+                    return FutureBuilder(
+                      future: futureNews,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Error: ${snapshot.error}'),
+                          );
+                        } else if (snapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: snapshot.data?.articles.length ?? 0,
+                            itemBuilder: (context, index) {
+                              var article = snapshot.data!.articles[index];
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0),
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        article.imageUrl!,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Container(
+                                            width: 100,
+                                            height: 100,
+                                            color: Colors.grey,
+                                            child: const Icon(
+                                              Icons.broken_image,
+                                              color: Colors.white,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            article.title!,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            article.description!,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          return const Center(
+                            child: Text('No data available'),
+                          );
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
             ],
           ),
         ),
