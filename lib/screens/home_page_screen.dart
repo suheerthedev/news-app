@@ -25,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   ];
 
   List<String> tabsTitle = [
-    'All',
     'Popular',
     'Technology',
     'Sports',
@@ -149,64 +148,77 @@ class _HomePageState extends State<HomePage> {
                             itemCount: snapshot.data?.articles.length ?? 0,
                             itemBuilder: (context, index) {
                               var article = snapshot.data!.articles[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Container(
-                                    width: 300,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(article.imageUrl!),
-                                        fit: BoxFit.cover,
-                                      ),
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ArticleDetailsScreen(
+                                              article: article),
                                     ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
                                     child: Container(
+                                      width: 300,
                                       decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.black.withOpacity(0.9),
-                                            Colors.black54
-                                          ],
-                                          begin: Alignment.bottomCenter,
-                                          end: Alignment.topCenter,
+                                        image: DecorationImage(
+                                          image:
+                                              NetworkImage(article.imageUrl!),
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'by ${article.author}',
-                                              style: const TextStyle(
-                                                  color: Color(0xffb20710),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              article.title!,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              article.description!,
-                                              maxLines: 3,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14),
-                                            ),
-                                          ],
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Colors.black.withOpacity(0.9),
+                                              Colors.black54
+                                            ],
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'by ${article.author}',
+                                                style: const TextStyle(
+                                                    color: Color(0xffb20710),
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 12),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                article.title!,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                article.description!,
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),

@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/models/news_model.dart';
+import 'package:intl/intl.dart';
 
 class ArticleDetailsScreen extends StatelessWidget {
   const ArticleDetailsScreen({super.key, required this.article});
   final ArticleModel article;
+
+  String formatDateTime(String? dateTimeString) {
+  if (dateTimeString == null) return "Unknown Publishing Date";
+  try {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    return DateFormat('dd MMM yyyy, hh:mm a').format(dateTime);
+  } catch (e) {
+    return "Invalid Date";
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +82,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      article.publishedAt ?? "Unknown Publishing Date",
+                      formatDateTime(article.publishedAt),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -111,7 +123,7 @@ class ArticleDetailsScreen extends StatelessWidget {
               icon: Container(
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: const Icon(Icons.arrow_back, color: Colors.black)),
