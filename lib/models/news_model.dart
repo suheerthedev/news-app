@@ -1,11 +1,11 @@
 class ArticleModel {
-  final String sourceName;
+  final String? sourceName;
   final String? author;
   final String? title;
   final String? description;
-  final String content;
+  final String? content;
   final String? imageUrl;
-  final String publishedAt;
+  final String? publishedAt;
 
   ArticleModel(
       {required this.author,
